@@ -24,15 +24,14 @@ const doit = async () => {
     let recordings = [];
     if (config.deleteScanAll || config.deleteDuplicats) {
         const body = await tivo.sendRequestAllPages(
-            'recordingSearch', 
-            {"state":["deleted"]},
+            {type:'recordingSearch', "state":["deleted"]},
             'recording'
         );
         recordings = body.recording;
     } else {
         const body = await tivo.sendRequest(
-            'recordingSearch',
             {
+                type: 'recordingSearch',
                 state: ['deleted'],
                 count: 50
             }
@@ -47,7 +46,7 @@ const doit = async () => {
         if (shouldDelete(r)) {
             console.log(r.title, r.subtitle, r.collectionId);
             console.log('DELETE');
-            const deleted = await tivo.sendRequest('recordingUpdate', {state:"contentDeleted", recordingId:[r.recordingId]});
+            const deleted = await tivo.sendRequest({type: 'recordingUpdate', state:"contentDeleted", recordingId:[r.recordingId]});
             // const deleted = {};
             if (deleted.type === 'success') {
                 console.log('done did deleted that thing');
@@ -105,7 +104,7 @@ const doit = async () => {
                     for (let i = 1; i < dupes.length; i++) {
                         const r = dupes[i];
                         console.log(`Deleting Dupe: ${r.title} S${r.seasonNumber}E${r.episodeNum[0]} - ${r.subtitle} ${r.startTime}`);
-                        const deleted = await tivo.sendRequest('recordingUpdate', {/*"bodyId": "tsn:84900019045ED87",*/state:"contentDeleted", recordingId:[r.recordingId]});
+                        const deleted = await tivo.sendRequest({type:'recordingUpdate', state:"contentDeleted", recordingId:[r.recordingId]});
                         //const deleted = {type:'success'};
                         if (deleted.type === 'success') {
                             console.log('done did deleted that thing');
@@ -120,9 +119,6 @@ const doit = async () => {
         }
     }
     
-
-
-    //console.log(body);
     tivo.disconnect();
 }
 

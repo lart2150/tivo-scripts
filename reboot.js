@@ -6,36 +6,19 @@ const doit = async () => {
     await tivo.connect();
     console.log('connected');
     
-    let body = await tivo.sendRequest(
-        'uiNavigate',
-        {
-            uri: 'x-tivo:classicui:restartDvr'
-        }
-    );
+    let response = await tivo.uiNavigate('x-tivo:classicui:restartDvr');
+    console.log(response);
 
     await new Promise(resolve => setTimeout(resolve, 5000));
 
-    body = await tivo.sendRequest(
-        'keyEventSend',
-        {event: 'thumbsDown'}
-    );
-    console.log(body);
-    body = await tivo.sendRequest(
-        'keyEventSend',
-        {event: 'thumbsDown'}
-    );
-    body = await tivo.sendRequest(
-        'keyEventSend',
-        {event: 'thumbsDown'}
-    );
+    response = await tivo.sendKey('thumbsDown');
+    response = await tivo.sendKey('thumbsDown');
+    response = await tivo.sendKey('thumbsDown');
 
-    body = await tivo.sendRequest(
-        'keyEventSend',
-        {event: 'enter'}
-    );
+    response = await tivo.sendKey('enter');
+    console.log(response);
     
     
-    //console.log(body);
     tivo.disconnect();
 }
 
