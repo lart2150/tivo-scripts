@@ -4,10 +4,9 @@ export const config = {
     deleteTitles: [
         'The Late Show With Stephen Colbert',
         'The Daily Show With Trevor Noah',
-        'CBS Evening News With Norah O\'Donnell',
-        'CBS Weekend News',
     ],
-    deleteRegex: /^Manual: /,
+    deleteRegex: /^(CBS|NBC|ABC|FOX) .* News/,
     deleteScanAll: false,//false it will only check the 50 most recently deleted recordings.  false is way faster if you have a lot of deleted recordings
     deleteDuplicats: false, //setting this to true will flip deleteScanAll to true.
+    tivoDecodePath: "C:\\tivodecode\\tivodecode.exe"//I strongly recommend tivodecode-ng
 };

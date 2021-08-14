@@ -1,12 +1,16 @@
 {
   "name": "tivo-node",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "A collection of scripts written in node to interact with tivo RCP.",
   "main": "autoDelete.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "type":"module",
-  "license": "GPL"
+  "type": "module",
+  "license": "GPL",
+  "dependencies": {
+    "digest-fetch": "^1.2.1",
+    "node-fetch": "^2.6.1"
+  }
 }
