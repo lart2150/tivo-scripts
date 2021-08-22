@@ -2,3 +2,4 @@
 /cdata.*
 /*.ts
 /node_modules
+/*.txt

@@ -22,6 +22,16 @@ This script will look how long you have guide data.  if it's less then 10 days i
 
 This is more an example/poc script that gets all of the recordings on a tive except for deleted recordings.  You can use it to get a recording id to download.
 
+### getRecordingSkip.js
+`node getRecordingSkip.js tivo:rc.12345678`
+
+this will get the recording metadata, skip metadata, and skip data offset.  It will write the data to a file like "title SxE subtitle.txt"
+
+you can then add the data to a recording you have downloaded using ffmpeg.
+
+`ffmpeg -i "Title - 1x01 - sub title.ts" -i "Title - 1x01 - sub title.txt" -map_metadata 1 -c copy "Title - 1x01 - sub title.mkv"`
+
+
 ### getStatus.js
 `node getStatus.js`
 
