@@ -11,6 +11,7 @@ export const config = {
     tivoDecodePath: "C:\\tivodecode\\tivodecode.exe",//I strongly recommend tivodecode-ng
 
     //used for tivo online
-    domainToken: 'asdfasdfasdf',//you need to pull this cookie from online.tivo.com.  at some point I'm going to write this to take a username/password and get the cookie.  but for now this is here.
+    username: 'tivo@example.com',
+    password: 'p@ssw0rd',
     tsn: 'tsn:000000000000000',//after I get loggin working I'll pull the first tsn from http://online.tivo.com/body/global/selectors
 };

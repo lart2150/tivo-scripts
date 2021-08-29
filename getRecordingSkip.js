@@ -6,7 +6,8 @@ import fs from 'fs';
 
 const doit = async (recordingId) => {
     const tivo = new TivoWs(
-        config.domainToken,
+        config.username,
+        config.password,
         config.tsn
     );
     await tivo.connect();
@@ -18,10 +19,11 @@ const doit = async (recordingId) => {
     const recording = recordingInfo.recording[0];
 
     let skip = null;
+    
     if (recordingInfo.recording && recordingInfo.recording[0]) {
         if (recording.clipMetadata && recording.clipMetadata[0] && recording.clipMetadata[0].segmentType === 'adSkip') {
             skip = await tivo.cipMetaDataSearch(recording.clipMetadata[0].clipMetadataId, recordingId);
-            //console.log(JSON.stringify(skip));
+            // console.log(JSON.stringify(skip));
         }
     } else {
         console.error('Recording does not have Skip metadata');
@@ -52,11 +54,10 @@ const doit = async (recordingId) => {
         "isLocal": true,
         "recordingId": recordingId,
         "type": "hlsStreamRecordingRequest",
-        responseCount: "multiple",
-      }, true);
+      });
 
-    //console.log('streaming', streaming);
-    //console.log('playlistUrl', `http://${config.ip}:49152${streaming.hlsSession.playlistUri}`);
+    // console.log('streaming', streaming);
+    // console.log('playlistUrl', `http://${config.ip}:49152${streaming.hlsSession.playlistUri}`);
 
     const hlsSessionId = streaming.hlsSession.hlsSessionId;
 
@@ -64,20 +65,21 @@ const doit = async (recordingId) => {
     try {
         //this seems to work most of the time
         let whatsOn = await tivo.sendRequest({"hlsSessionId":hlsSessionId,"type":"whatsOnSearch", SchemaVersion: 38});
-        //console.log('whatsOn', whatsOn.whatsOn[0]);
+        // console.log('whatsOn', whatsOn.whatsOn[0]);
 
         if (whatsOn.whatsOn[0].recordingId === recordingId) {
-            //console.log('SUCESS! offset: ' + whatsOn.whatsOn[0].streamPositionMs)
+            // console.log('SUCESS! offset: ' + whatsOn.whatsOn[0].streamPositionMs)
             offset = whatsOn.whatsOn[0].streamPositionMs;
         }
     } finally {
         const cancle = await tivo.sendRequest({"clientUuid":"5678","hlsSessionId":hlsSessionId,"type":"hlsStreamRelease"});
-        //console.log('cancle', cancle);
+        // console.log('cancle', cancle);
     }
     tivo.disconnect();
+    
 
     if(offset < 0) {
-        console.log('failed to find skip offset');
+        console.error('failed to find skip offset');
         return;
     }
 
